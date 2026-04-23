@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ppx.dev/schemas/core/context-modifier.schema.json",
+  "title": "PPX Context Modifier",
+  "description": "An object that alters how claims SHOULD be interpreted under specific conditions.",
+  "type": "object",
+  "required": ["modifier_id", "namespace", "key", "effect_type", "condition", "effect", "confidence", "source"],
+  "properties": {
+    "modifier_id": {
+      "type": "string",
+      "pattern": "^ppx:modifier:[A-Za-z0-9_.:-]+$"
+    },
+    "namespace": { "type": "string", "minLength": 1 },
+    "key": { "type": "string", "minLength": 1 },
+    "effect_type": {
+      "type": "string",
+      "enum": ["weight_adjustment", "override", "veto", "suggest"]
+    },
+    "targets": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "condition": {
+      "type": "object",
+      "description": "Map of context-dimension keys (climate, season, occasion, etc.) to values.",
+      "additionalProperties": true
+    },
+    "effect": {
+      "type": "object",
+      "properties": {
+        "increase": { "type": "array", "items": { "type": "string" } },
+        "decrease": { "type": "array", "items": { "type": "string" } },
+        "override": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "confidence": { "type": "number", "minimum": 0.0, "maximum": 1.0 },
+    "source": {
+      "type": "object",
+      "required": ["kind"],
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": ["user_stated", "observed", "imported", "inferred", "derived_aggregate"]
+        },
+        "origin": { "type": "string" }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

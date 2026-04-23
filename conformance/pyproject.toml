@@ -1,0 +1,32 @@
+[project]
+name = "ppx-conformance"
+version = "0.1.0"
+description = "Executable conformance test suite for the PPX specification."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "Apache-2.0" }
+dependencies = [
+    "jsonschema>=4.21.0",
+    "referencing>=0.35.0",
+    "pytest>=8.0.0",
+    "httpx>=0.27.0",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra --strict-markers"
+markers = [
+    "level1: Level 1 — Portable Read conformance",
+    "level2: Level 2 — Context-aware conformance",
+    "level3: Level 3 — Interactive conformance",
+    "level4: Level 4 — Multi-agent conformance",
+    "requires_provider: requires a live provider URL in PPX_PROVIDER_URL",
+    "schema: pure schema / fixture test — no provider required",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["tests", "fixtures"]

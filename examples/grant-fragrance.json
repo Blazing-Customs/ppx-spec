@@ -1,0 +1,26 @@
+{
+  "grant_id": "ppx:grant:g-001",
+  "subject_id": "did:example:user-123",
+  "grantee_id": "did:example:agent:fragrance-app",
+  "status": "active",
+  "granted_at": "2026-04-06T18:10:00Z",
+  "expires_at": "2026-05-06T18:10:00Z",
+  "purposes": ["recommendation", "ranking", "explanation", "propose_update"],
+  "allowed_domains": ["fragrance"],
+  "allowed_namespaces": ["core", "fragrance"],
+  "allowed_claim_keys": [
+    "novelty_tolerance",
+    "sensory_intensity_preference",
+    "fragrance.family_preference",
+    "fragrance.intensity_preference",
+    "fragrance.projection_tolerance",
+    "fragrance.sweetness_preference",
+    "fragrance.freshness_preference",
+    "fragrance.occasion_bias"
+  ],
+  "allowed_operations": ["read", "propose_update"],
+  "cross_domain_transfer": "deny",
+  "writeback_policy": "review_required",
+  "redisclosure": "forbidden",
+  "audit": { "log_access": true, "notify_on_writeback": true }
+}

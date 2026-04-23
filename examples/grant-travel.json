@@ -1,0 +1,22 @@
+{
+  "grant_id": "ppx:grant:g-002",
+  "subject_id": "did:example:user-123",
+  "grantee_id": "did:example:agent:travelly",
+  "status": "active",
+  "granted_at": "2026-04-20T10:00:00Z",
+  "expires_at": "2026-04-27T10:00:00Z",
+  "purposes": ["recommendation", "explanation"],
+  "allowed_domains": ["travel"],
+  "allowed_namespaces": ["core"],
+  "allowed_claim_keys": [
+    "novelty_tolerance",
+    "social_energy_preference",
+    "sensory_intensity_preference",
+    "ambiguity_tolerance"
+  ],
+  "allowed_operations": ["read"],
+  "cross_domain_transfer": "allow_with_review",
+  "writeback_policy": "forbidden",
+  "redisclosure": "forbidden",
+  "audit": { "log_access": true, "notify_on_writeback": false }
+}

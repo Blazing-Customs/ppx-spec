@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+**/__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+**/.pytest_cache/
+.venv/
+venv/
+*.egg-info/
+dist/
+build/
+
+# MkDocs
+site/_build/
+site/.cache/
+# MkDocs default build output (when run from repo root) and from inside site/
+/site_build/
+/site/site/
+
+# Editor
+.vscode/
+.idea/
+*.swp
+.DS_Store
+
+# Local env
+.env
+.env.local

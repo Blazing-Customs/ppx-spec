@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ppx.dev/schemas/core/profile.schema.json",
+  "title": "PPX Profile",
+  "description": "A user-scoped collection of structured claims about preferences, aversions, tendencies, and context modifiers.",
+  "type": "object",
+  "required": ["ppx_version", "profile_id", "subject_id", "provider_id", "created_at", "updated_at"],
+  "properties": {
+    "ppx_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+(-[A-Za-z0-9.-]+)?$",
+      "description": "PPX spec version the profile conforms to."
+    },
+    "profile_id": {
+      "type": "string",
+      "pattern": "^ppx:profile:[A-Za-z0-9_.:-]+$"
+    },
+    "subject_id": {
+      "type": "string",
+      "description": "Identity-independent subject identifier. MAY be a DID, opaque UUID, or provider-internal ID.",
+      "minLength": 1
+    },
+    "provider_id": {
+      "type": "string",
+      "pattern": "^ppx:provider:[A-Za-z0-9_.:-]+$"
+    },
+    "created_at": { "type": "string", "format": "date-time" },
+    "updated_at": { "type": "string", "format": "date-time" },
+    "default_policy": {
+      "type": "object",
+      "properties": {
+        "cross_domain_transfer": {
+          "type": "string",
+          "enum": ["deny", "allow_with_review", "allow_if_same_provider", "allow"]
+        },
+        "inference_writeback": {
+          "type": "string",
+          "enum": ["forbidden", "review_required", "auto_for_low_risk", "allow"]
+        },
+        "retention_days": { "type": "integer", "minimum": 0 }
+      },
+      "additionalProperties": false
+    },
+    "claims": {
+      "type": "array",
+      "items": { "$ref": "claim.schema.json" }
+    },
+    "context_modifiers": {
+      "type": "array",
+      "items": { "$ref": "context-modifier.schema.json" }
+    },
+    "consent_grants": {
+      "type": "array",
+      "items": { "$ref": "consent-grant.schema.json" }
+    },
+    "extensions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["namespace", "version"],
+        "properties": {
+          "namespace": { "type": "string" },
+          "version": { "type": "string" }
+        }
+      }
+    }
+  },
+  "additionalProperties": false
+}

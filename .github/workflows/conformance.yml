@@ -1,0 +1,43 @@
+name: conformance-suite
+
+on:
+  workflow_dispatch:
+    inputs:
+      provider_url:
+        description: "PPX provider URL to run conformance against"
+        required: true
+        default: "https://provider.example.com"
+      levels:
+        description: "pytest marker expression (e.g. level1, 'level1 or level2')"
+        required: false
+        default: "level1"
+
+jobs:
+  conformance:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install suite
+        working-directory: conformance
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e .
+
+      - name: Run conformance against provider
+        working-directory: conformance
+        env:
+          PPX_PROVIDER_URL: ${{ inputs.provider_url }}
+          PPX_PROVIDER_TOKEN: ${{ secrets.PPX_PROVIDER_TOKEN }}
+          PPX_EXPIRED_TOKEN: ${{ secrets.PPX_EXPIRED_TOKEN }}
+          PPX_REVOCABLE_GRANT_ID: ${{ secrets.PPX_REVOCABLE_GRANT_ID }}
+          PPX_REVOCABLE_TOKEN: ${{ secrets.PPX_REVOCABLE_TOKEN }}
+          PPX_REVOKE_TOKEN: ${{ secrets.PPX_REVOKE_TOKEN }}
+          PPX_DENY_CROSSDOMAIN_TOKEN: ${{ secrets.PPX_DENY_CROSSDOMAIN_TOKEN }}
+          PPX_FORBIDDEN_WRITEBACK_TOKEN: ${{ secrets.PPX_FORBIDDEN_WRITEBACK_TOKEN }}
+        run: |
+          pytest -m "${{ inputs.levels }}" -v

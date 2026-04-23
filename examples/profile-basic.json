@@ -1,0 +1,107 @@
+{
+  "ppx_version": "0.1",
+  "profile_id": "ppx:profile:7f4f7c87-9d98-4c9b-b8a0-0d86b1a8d502",
+  "subject_id": "did:example:user-123",
+  "provider_id": "ppx:provider:blazing-customs",
+  "created_at": "2026-04-06T18:05:00Z",
+  "updated_at": "2026-04-20T09:14:00Z",
+  "default_policy": {
+    "cross_domain_transfer": "deny",
+    "inference_writeback": "review_required",
+    "retention_days": 365
+  },
+  "claims": [
+    {
+      "claim_id": "ppx:claim:c-001",
+      "type": "preference",
+      "namespace": "core",
+      "key": "novelty_tolerance",
+      "value": 0.62,
+      "value_type": "float",
+      "units": "normalized_0_1",
+      "polarity": "positive",
+      "confidence": 0.78,
+      "stability": "medium",
+      "source": {
+        "kind": "inferred",
+        "origin": "onboarding_quiz_v1",
+        "evidence_refs": ["ppx:evidence:quiz:12", "ppx:evidence:behavior:93"]
+      },
+      "explanation": {
+        "summary": "User tends to prefer moderate novelty over highly familiar or highly disruptive options."
+      },
+      "applicability": { "domains": ["fragrance", "travel", "media"], "contexts": ["default"] },
+      "lifecycle": {
+        "last_confirmed_at": "2026-03-20T15:00:00Z",
+        "expires_at": "2026-09-20T15:00:00Z",
+        "decay_policy": "linear"
+      },
+      "review": {
+        "user_visible": true,
+        "user_editable": true,
+        "review_status": "pending_confirmation"
+      }
+    },
+    {
+      "claim_id": "ppx:claim:c-002",
+      "type": "preference",
+      "namespace": "core",
+      "key": "social_energy_preference",
+      "value": 0.48,
+      "value_type": "float",
+      "units": "normalized_0_1",
+      "confidence": 0.66,
+      "stability": "medium",
+      "source": { "kind": "user_stated", "origin": "onboarding_quiz_v1" },
+      "review": { "user_visible": true, "user_editable": true, "review_status": "confirmed" }
+    },
+    {
+      "claim_id": "ppx:claim:c-003",
+      "type": "preference",
+      "namespace": "fragrance",
+      "key": "family_preference",
+      "value": { "woody": 0.82, "citrus": 0.64, "oriental": 0.28, "aquatic": 0.55, "gourmand": 0.18 },
+      "value_type": "map<string,float>",
+      "confidence": 0.71,
+      "stability": "medium",
+      "source": { "kind": "observed", "origin": "sample_rating_session" },
+      "applicability": { "domains": ["fragrance"], "contexts": ["default"] },
+      "review": { "user_visible": true, "user_editable": true, "review_status": "confirmed" }
+    },
+    {
+      "claim_id": "ppx:claim:c-004",
+      "type": "aversion",
+      "namespace": "fragrance",
+      "key": "sweetness_preference",
+      "value": 0.18,
+      "value_type": "float",
+      "units": "normalized_0_1",
+      "polarity": "negative",
+      "confidence": 0.74,
+      "stability": "high",
+      "source": { "kind": "user_stated", "origin": "onboarding_quiz_v1" },
+      "review": { "user_visible": true, "user_editable": true, "review_status": "confirmed" }
+    }
+  ],
+  "context_modifiers": [
+    {
+      "modifier_id": "ppx:modifier:014",
+      "namespace": "core",
+      "key": "climate_heat_humidity_bias",
+      "effect_type": "weight_adjustment",
+      "targets": ["fragrance.projection_tolerance", "fragrance.freshness_preference"],
+      "condition": { "climate": "hot_humid" },
+      "effect": {
+        "increase": ["freshness_preference"],
+        "decrease": ["projection_tolerance"]
+      },
+      "confidence": 0.81,
+      "source": { "kind": "observed", "origin": "seasonal_behavior_log" }
+    }
+  ],
+  "consent_grants": [],
+  "extensions": [
+    { "namespace": "core", "version": "0.1" },
+    { "namespace": "fragrance", "version": "0.1" }
+  ]
+}

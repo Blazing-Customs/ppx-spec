@@ -1,0 +1,45 @@
+name: validate-schemas
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install jsonschema referencing pytest httpx
+
+      - name: Lint all core + extension schemas are valid JSON Schema 2020-12
+        run: |
+          python - <<'PY'
+          import json, sys, glob
+          from jsonschema import Draft202012Validator
+          bad = []
+          for f in sorted(glob.glob('schemas/**/*.schema.json', recursive=True)):
+              with open(f) as fh:
+                  s = json.load(fh)
+              try:
+                  Draft202012Validator.check_schema(s)
+                  print('OK ', f)
+              except Exception as e:
+                  print('BAD', f, e)
+                  bad.append(f)
+          sys.exit(1 if bad else 0)
+          PY
+
+      - name: Run schema-level conformance (no provider required)
+        working-directory: conformance
+        run: |
+          python -m pip install -e .
+          pytest -m schema -v

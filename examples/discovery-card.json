@@ -1,0 +1,48 @@
+{
+  "ppx_version": "0.1",
+  "provider_id": "ppx:provider:blazing-customs",
+  "name": "Blazing Customs PPX Reference Provider",
+  "base_url": "https://profiles.example.com",
+  "capabilities": {
+    "profile_read": true,
+    "claim_query": true,
+    "consent_management": true,
+    "propose_update": true,
+    "export": true,
+    "delete": true,
+    "audit_log": true
+  },
+  "supported_namespaces": ["core", "fragrance", "travel"],
+  "supported_purposes": [
+    "recommendation",
+    "ranking",
+    "matching",
+    "explanation",
+    "propose_update"
+  ],
+  "default_policies": {
+    "cross_domain_transfer": "deny",
+    "writeback_policy": "review_required"
+  },
+  "auth": {
+    "schemes": ["oauth2.1", "openid_connect"],
+    "authorization_endpoint": "https://profiles.example.com/oauth/authorize",
+    "token_endpoint": "https://profiles.example.com/oauth/token"
+  },
+  "signing": { "profile_signatures": false, "grant_signatures": false },
+  "transport_bindings": {
+    "mcp": {
+      "supported": true,
+      "server_uri": "https://profiles.example.com/mcp"
+    },
+    "a2a": {
+      "supported": true,
+      "agent_card_uri": "https://profiles.example.com/.well-known/agent-card.json"
+    },
+    "http_api": {
+      "supported": true,
+      "openapi_uri": "https://profiles.example.com/openapi.json"
+    }
+  },
+  "ui": { "ag_ui_supported": true, "a2ui_supported": true }
+}

@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ppx.dev/schemas/core/derived-view.schema.json",
+  "title": "PPX Derived View",
+  "description": "A task-scoped projection of one or more profiles. MUST NOT re-export raw claim values outside grant scope.",
+  "type": "object",
+  "required": ["view_id", "view_kind", "subject_id", "grantee_id", "created_at", "expires_at"],
+  "properties": {
+    "view_id": {
+      "type": "string",
+      "pattern": "^ppx:view:[A-Za-z0-9_.:-]+$"
+    },
+    "view_kind": {
+      "type": "string",
+      "description": "The projection type (e.g. `match`, `recommendation_basis`, `compatibility`, `risk_profile`).",
+      "minLength": 1
+    },
+    "subject_id": { "type": "string", "minLength": 1 },
+    "grantee_id": { "type": "string", "minLength": 1 },
+    "created_at": { "type": "string", "format": "date-time" },
+    "expires_at": { "type": "string", "format": "date-time" },
+    "signals": {
+      "type": "object",
+      "description": "Normalized, scoped signal values derived from claims. Keys are view-kind-specific.",
+      "additionalProperties": { "type": "number" }
+    },
+    "warnings": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "explanations": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "basis": {
+      "type": "array",
+      "description": "Claim keys that contributed to this view.",
+      "items": { "type": "string" }
+    }
+  },
+  "additionalProperties": false
+}

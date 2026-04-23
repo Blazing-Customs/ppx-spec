@@ -1,0 +1,20 @@
+{
+  "modifier_id": "ppx:modifier:014",
+  "namespace": "core",
+  "key": "climate_heat_humidity_bias",
+  "effect_type": "weight_adjustment",
+  "targets": [
+    "fragrance.projection_tolerance",
+    "fragrance.freshness_preference"
+  ],
+  "condition": { "climate": "hot_humid" },
+  "effect": {
+    "increase": ["freshness_preference"],
+    "decrease": ["projection_tolerance", "sweetness_preference"]
+  },
+  "confidence": 0.81,
+  "source": {
+    "kind": "observed",
+    "origin": "seasonal_behavior_log"
+  }
+}

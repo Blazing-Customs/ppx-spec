@@ -1,0 +1,121 @@
+site_name: PPX — Preference Profile Exchange
+site_description: Portable, user-owned, consented preference and context profiles for agent ecosystems.
+site_url: https://blazing-customs.github.io/ppx-spec/
+repo_url: https://github.com/Blazing-Customs/ppx-spec
+repo_name: Blazing-Customs/ppx-spec
+edit_uri: edit/main/site/docs/
+copyright: >
+  &copy; 2026 PPX contributors. Spec prose
+  <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>;
+  schemas and code <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache 2.0</a>.
+
+docs_dir: docs
+
+theme:
+  name: material
+  language: en
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: deep purple
+      accent: indigo
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: deep purple
+      accent: indigo
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+  features:
+    - content.action.edit
+    - content.code.copy
+    - content.tabs.link
+    - navigation.instant
+    - navigation.sections
+    - navigation.tabs
+    - navigation.top
+    - navigation.tracking
+    - search.highlight
+    - search.suggest
+    - toc.follow
+  icon:
+    repo: fontawesome/brands/github
+  logo: assets/logo.svg
+  favicon: assets/favicon.ico
+
+extra:
+  status:
+    new: Recently added
+    deprecated: Deprecated
+  version:
+    default: latest
+
+markdown_extensions:
+  - abbr
+  - admonition
+  - attr_list
+  - def_list
+  - footnotes
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.details
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.magiclink
+  - pymdownx.snippets:
+      check_paths: true
+      base_path:
+        - .
+        - ..
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+
+plugins:
+  - search
+  - include-markdown
+
+nav:
+  - Home: index.md
+  - Getting started: getting-started.md
+  - Specification:
+      - Read the spec: spec.md
+      - Conformance levels: conformance.md
+  - Concepts:
+      - Profile: concepts/profile.md
+      - Claim: concepts/claim.md
+      - Consent grant: concepts/consent-grant.md
+      - Provenance & confidence: concepts/provenance.md
+      - Context modifier: concepts/context-modifier.md
+  - Data model:
+      - Schemas: data-model/schemas.md
+      - Examples: data-model/examples.md
+  - Consent & trust: consent-and-trust.md
+  - Discovery: discovery.md
+  - Extensions:
+      - Overview: extensions/overview.md
+      - core: extensions/core.md
+      - fragrance: extensions/fragrance.md
+      - travel: extensions/travel.md
+  - Bindings:
+      - MCP: bindings/mcp.md
+      - A2A: bindings/a2a.md
+      - AG-UI: bindings/ag-ui.md
+      - A2UI: bindings/a2ui.md
+      - HTTP: bindings/http.md
+  - Governance:
+      - Namespace registration: governance/namespace-registration.md
+      - Versioning: governance/versioning.md
+      - Proposal template: governance/proposal-template.md
+  - Changelog: changelog.md
+  - Community: community.md

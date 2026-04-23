@@ -1,0 +1,27 @@
+{
+  "view_id": "ppx:view:match-991",
+  "view_kind": "compatibility",
+  "subject_id": "did:example:user-123",
+  "grantee_id": "did:example:agent:dating-compat",
+  "created_at": "2026-04-22T20:15:00Z",
+  "expires_at": "2026-04-22T21:15:00Z",
+  "signals": {
+    "social_energy_alignment": 0.82,
+    "novelty_alignment": 0.69,
+    "communication_alignment": 0.87,
+    "spontaneity_alignment": 0.41
+  },
+  "warnings": [
+    "Potential mismatch in spontaneity tolerance."
+  ],
+  "explanations": [
+    "Both profiles indicate preference for depth over breadth in conversation.",
+    "One profile prefers more structured planning than the other."
+  ],
+  "basis": [
+    "core.social_energy_preference",
+    "core.novelty_tolerance",
+    "core.conversation_depth_preference",
+    "core.ambiguity_tolerance"
+  ]
+}

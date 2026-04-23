@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ppx.dev/schemas/extensions/core.schema.json",
+  "title": "PPX Core Namespace Extension",
+  "description": "The core namespace intentionally remains generic and cross-cutting. All core keys take values in [0.0, 1.0] with units `normalized_0_1`.",
+  "type": "object",
+  "x-ppx-extension": {
+    "namespace": "core",
+    "version": "0.1",
+    "title": "Core Preference Extension",
+    "keys": [
+      { "key": "novelty_tolerance", "value_type": "float", "units": "normalized_0_1",
+        "description": "Tendency to prefer novel over familiar options. 0.0 = strong familiarity preference; 1.0 = strong novelty preference." },
+      { "key": "risk_tolerance", "value_type": "float", "units": "normalized_0_1",
+        "description": "General comfort with uncertainty and potential downside. Not a financial risk score." },
+      { "key": "regret_sensitivity", "value_type": "float", "units": "normalized_0_1",
+        "description": "Sensitivity to post-choice regret. High values SHOULD push systems toward safer, more reversible options." },
+      { "key": "sensory_intensity_preference", "value_type": "float", "units": "normalized_0_1",
+        "description": "Preferred sensory intensity across modalities (taste, scent, sound, texture)." },
+      { "key": "social_energy_preference", "value_type": "float", "units": "normalized_0_1",
+        "description": "Preferred amount of social stimulation. 0.0 = solitary-leaning; 1.0 = gregarious-leaning." },
+      { "key": "decision_speed_preference", "value_type": "float", "units": "normalized_0_1",
+        "description": "Preferred pace of decision-making. Low = deliberative; high = quick." },
+      { "key": "ambiguity_tolerance", "value_type": "float", "units": "normalized_0_1",
+        "description": "Comfort with under-specified or open-ended situations." },
+      { "key": "budget_sensitivity", "value_type": "float", "units": "normalized_0_1",
+        "description": "Price-awareness and willingness to trade price for quality. Not a discretionary-income measure." },
+      { "key": "explanation_depth_preference", "value_type": "float", "units": "normalized_0_1",
+        "description": "Preferred depth of explanation from an agent. Low = concise; high = thorough." },
+      { "key": "conversation_depth_preference", "value_type": "float", "units": "normalized_0_1",
+        "description": "Preferred depth of social conversation. Low = breadth-oriented; high = depth-oriented." }
+    ],
+    "privacy_guidance": {
+      "cross_domain_use": "recommended",
+      "high_impact": false,
+      "notes": "Core keys are designed to be safely transferable across domains under a grant; they MUST NOT carry identifying information."
+    }
+  },
+  "properties": {},
+  "additionalProperties": false
+}

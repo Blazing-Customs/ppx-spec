@@ -1,0 +1,120 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ppx.dev/schemas/core/discovery-card.schema.json",
+  "title": "PPX Discovery Card",
+  "description": "Document served at /.well-known/ppx-card.json advertising a provider's PPX capability.",
+  "type": "object",
+  "required": ["ppx_version", "provider_id", "name", "base_url", "capabilities", "supported_namespaces", "supported_purposes", "default_policies", "auth"],
+  "properties": {
+    "ppx_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+(-[A-Za-z0-9.-]+)?$"
+    },
+    "provider_id": {
+      "type": "string",
+      "pattern": "^ppx:provider:[A-Za-z0-9_.:-]+$"
+    },
+    "name": { "type": "string", "minLength": 1 },
+    "base_url": { "type": "string", "format": "uri" },
+    "capabilities": {
+      "type": "object",
+      "properties": {
+        "profile_read": { "type": "boolean" },
+        "claim_query": { "type": "boolean" },
+        "consent_management": { "type": "boolean" },
+        "propose_update": { "type": "boolean" },
+        "export": { "type": "boolean" },
+        "delete": { "type": "boolean" },
+        "audit_log": { "type": "boolean" }
+      },
+      "additionalProperties": false
+    },
+    "supported_namespaces": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1
+    },
+    "supported_purposes": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "default_policies": {
+      "type": "object",
+      "properties": {
+        "cross_domain_transfer": {
+          "type": "string",
+          "enum": ["deny", "allow_with_review", "allow_if_same_provider", "allow"]
+        },
+        "writeback_policy": {
+          "type": "string",
+          "enum": ["forbidden", "review_required", "auto_for_low_risk", "allow"]
+        }
+      },
+      "additionalProperties": false
+    },
+    "auth": {
+      "type": "object",
+      "required": ["schemes"],
+      "properties": {
+        "schemes": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["oauth2", "oauth2.1", "openid_connect", "bearer"]
+          },
+          "minItems": 1
+        },
+        "authorization_endpoint": { "type": "string", "format": "uri" },
+        "token_endpoint": { "type": "string", "format": "uri" }
+      },
+      "additionalProperties": false
+    },
+    "signing": {
+      "type": "object",
+      "properties": {
+        "profile_signatures": { "type": "boolean" },
+        "grant_signatures": { "type": "boolean" }
+      },
+      "additionalProperties": false
+    },
+    "transport_bindings": {
+      "type": "object",
+      "properties": {
+        "mcp": {
+          "type": "object",
+          "properties": {
+            "supported": { "type": "boolean" },
+            "server_uri": { "type": "string", "format": "uri" }
+          },
+          "additionalProperties": false
+        },
+        "a2a": {
+          "type": "object",
+          "properties": {
+            "supported": { "type": "boolean" },
+            "agent_card_uri": { "type": "string", "format": "uri" }
+          },
+          "additionalProperties": false
+        },
+        "http_api": {
+          "type": "object",
+          "properties": {
+            "supported": { "type": "boolean" },
+            "openapi_uri": { "type": "string", "format": "uri" }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "ui": {
+      "type": "object",
+      "properties": {
+        "ag_ui_supported": { "type": "boolean" },
+        "a2ui_supported": { "type": "boolean" }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

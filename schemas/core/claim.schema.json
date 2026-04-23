@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ppx.dev/schemas/core/claim.schema.json",
+  "title": "PPX Claim",
+  "description": "A machine-readable statement about the subject's preference, aversion, tendency, constraint, setting, or derived signal.",
+  "type": "object",
+  "required": ["claim_id", "type", "namespace", "key", "value", "confidence", "source"],
+  "properties": {
+    "claim_id": {
+      "type": "string",
+      "pattern": "^ppx:claim:[A-Za-z0-9_.:-]+$"
+    },
+    "type": {
+      "type": "string",
+      "enum": ["preference", "aversion", "tendency", "constraint", "setting", "derived_signal"]
+    },
+    "namespace": {
+      "type": "string",
+      "minLength": 1,
+      "description": "`core` or a registered extension namespace."
+    },
+    "key": { "type": "string", "minLength": 1 },
+    "value": {
+      "description": "Claim value. Shape depends on `value_type`."
+    },
+    "value_type": {
+      "type": "string",
+      "enum": ["float", "int", "bool", "string", "string_list", "map", "map<string,float>"]
+    },
+    "units": { "type": "string" },
+    "polarity": { "type": "string", "enum": ["positive", "negative", "neutral"] },
+    "confidence": { "type": "number", "minimum": 0.0, "maximum": 1.0 },
+    "stability": { "type": "string", "enum": ["low", "medium", "high"] },
+    "source": {
+      "type": "object",
+      "required": ["kind"],
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": ["user_stated", "observed", "imported", "inferred", "derived_aggregate"]
+        },
+        "origin": { "type": "string" },
+        "evidence_refs": {
+          "type": "array",
+          "items": { "type": "string", "pattern": "^ppx:evidence:[A-Za-z0-9_.:-]+$" }
+        }
+      },
+      "additionalProperties": false
+    },
+    "explanation": {
+      "type": "object",
+      "properties": {
+        "summary": { "type": "string" },
+        "detail": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "applicability": {
+      "type": "object",
+      "properties": {
+        "domains": { "type": "array", "items": { "type": "string" } },
+        "contexts": { "type": "array", "items": { "type": "string" } }
+      },
+      "additionalProperties": false
+    },
+    "lifecycle": {
+      "type": "object",
+      "properties": {
+        "last_confirmed_at": { "type": "string", "format": "date-time" },
+        "expires_at": { "type": "string", "format": "date-time" },
+        "decay_policy": { "type": "string", "enum": ["none", "linear", "exponential"] }
+      },
+      "additionalProperties": false
+    },
+    "review": {
+      "type": "object",
+      "properties": {
+        "user_visible": { "type": "boolean" },
+        "user_editable": { "type": "boolean" },
+        "review_status": {
+          "type": "string",
+          "enum": ["unreviewed", "pending_confirmation", "confirmed", "rejected"]
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

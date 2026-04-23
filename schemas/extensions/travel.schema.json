@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ppx.dev/schemas/extensions/travel.schema.json",
+  "title": "PPX Travel Preference Extension",
+  "description": "Vocabulary for travel and environment-preference claims.",
+  "type": "object",
+  "x-ppx-extension": {
+    "namespace": "travel",
+    "version": "0.1",
+    "title": "Travel Preference Extension",
+    "keys": [
+      { "key": "climate_heat_humidity_bias", "value_type": "float", "units": "normalized_0_1",
+        "description": "Preferred heat+humidity intensity. 0.0 = cold/dry preference; 1.0 = hot/humid preference." },
+      { "key": "urbanism_preference", "value_type": "float", "units": "normalized_0_1",
+        "description": "Preferred density. 0.0 = rural/wilderness; 1.0 = dense urban." },
+      { "key": "pace_preference", "value_type": "float", "units": "normalized_0_1",
+        "description": "Preferred trip pace. 0.0 = slow/restful; 1.0 = fast/packed." },
+      { "key": "cultural_immersion_preference", "value_type": "float", "units": "normalized_0_1",
+        "description": "Preferred depth of local-culture engagement vs tourist-path comfort." },
+      { "key": "outdoor_activity_preference", "value_type": "float", "units": "normalized_0_1",
+        "description": "Preference for outdoor/active over indoor/sedentary activities." },
+      { "key": "cuisine_openness", "value_type": "float", "units": "normalized_0_1",
+        "description": "Openness to unfamiliar cuisine relative to familiar." },
+      { "key": "accommodation_style", "value_type": "string",
+        "allowed_values": ["hostel", "boutique", "business", "luxury", "homestay", "rental"],
+        "description": "Preferred accommodation archetype." },
+      { "key": "group_size_preference", "value_type": "string",
+        "allowed_values": ["solo", "pair", "small_group", "large_group"],
+        "description": "Preferred travel group size." },
+      { "key": "trip_duration_preference_days", "value_type": "int",
+        "description": "Typical preferred trip length in days." }
+    ],
+    "privacy_guidance": {
+      "cross_domain_use": "discouraged_without_review",
+      "high_impact": false,
+      "notes": "Travel keys MAY correlate with location inference and SHOULD NOT be freely shared cross-domain. Prefer core-namespace signals for cross-domain use."
+    }
+  },
+  "properties": {},
+  "additionalProperties": false
+}

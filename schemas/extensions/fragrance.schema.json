@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ppx.dev/schemas/extensions/fragrance.schema.json",
+  "title": "PPX Fragrance Preference Extension",
+  "description": "Vocabulary for fragrance and scent preference claims.",
+  "type": "object",
+  "x-ppx-extension": {
+    "namespace": "fragrance",
+    "version": "0.1",
+    "title": "Fragrance Preference Extension",
+    "keys": [
+      { "key": "family_preference", "value_type": "map<string,float>",
+        "description": "Relative affinity for fragrance families (e.g. `woody`, `citrus`, `floral`, `oriental`, `aquatic`, `gourmand`). Values in [0.0, 1.0]." },
+      { "key": "intensity_preference", "value_type": "float", "units": "normalized_0_1",
+        "description": "Preferred overall scent intensity at the wearer's skin." },
+      { "key": "projection_tolerance", "value_type": "float", "units": "normalized_0_1",
+        "description": "Tolerance for scent that projects beyond the wearer's immediate space." },
+      { "key": "longevity_preference", "value_type": "float", "units": "normalized_0_1",
+        "description": "Preferred time a fragrance should last on skin/clothing." },
+      { "key": "sweetness_preference", "value_type": "float", "units": "normalized_0_1",
+        "description": "Preference for sweet, gourmand, or syrupy facets. 0.0 = strong aversion; 1.0 = strong preference." },
+      { "key": "freshness_preference", "value_type": "float", "units": "normalized_0_1",
+        "description": "Preference for airy, aquatic, or citrus-fresh profiles." },
+      { "key": "occasion_bias", "value_type": "map<string,float>",
+        "description": "Map of occasion → family-skew affinity (e.g. `{\"date_night\": 0.82, \"office\": 0.40}`)." },
+      { "key": "note_aversions", "value_type": "string_list",
+        "description": "Explicitly disliked notes (e.g. `oud`, `patchouli_heavy`, `cashmeran`)." }
+    ],
+    "privacy_guidance": {
+      "cross_domain_use": "discouraged_without_review",
+      "high_impact": false,
+      "notes": "Raw fragrance-family data is domain-specific and SHOULD NOT be reused cross-domain. Transferable signals SHOULD be mapped into the `core` namespace under grant review."
+    }
+  },
+  "properties": {},
+  "additionalProperties": false
+}
