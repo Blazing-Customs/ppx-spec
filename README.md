@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="site/docs/assets/logo.svg" alt="PPX logo" width="128" height="128"/>
+</p>
+
 # PPX — Preference Profile Exchange
 
 > Portable, user-owned, consented preference and context profiles for agent ecosystems.

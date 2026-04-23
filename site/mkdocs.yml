@@ -46,6 +46,9 @@ theme:
   logo: assets/logo.svg
   favicon: assets/favicon.ico
 
+extra_css:
+  - assets/extra.css
+
 extra:
   status:
     new: Recently added

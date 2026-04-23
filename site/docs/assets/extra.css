@@ -1,0 +1,12 @@
+/* Slightly larger logo in the header for the PPX mark to breathe. */
+.md-header__button.md-logo img,
+.md-header__button.md-logo svg {
+  height: 1.6rem;
+  width: 1.6rem;
+}
+
+/* Make the tile logo look a little more deliberate on the hover state. */
+.md-header__button.md-logo:hover img {
+  transform: rotate(-3deg);
+  transition: transform 0.2s ease;
+}
