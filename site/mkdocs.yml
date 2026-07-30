@@ -96,7 +96,6 @@ hooks:
 nav:
   - Home: index.md
   - Getting started: getting-started.md
-  - Tutorial: tutorials/30-minute-integrator.md
   - Specification:
       - Read the spec: spec.md
       - Conformance levels: conformance.md

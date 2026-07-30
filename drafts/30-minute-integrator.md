@@ -39,35 +39,18 @@ your own.
 
 ## 1. Install an SDK
 
-!!! warning "Not on PyPI or npm yet"
+!!! warning "There is no SDK to install yet"
 
-    PPX is a draft specification and **no SDK has been published to a public
-    registry.** `pip install ppx-client` and `npm i @ppx/client` will fail.
-    Install from source until v0.1.0 ships — those names are reserved intent,
-    not something you can fetch today.
+    PPX is a draft specification. **No PPX package has been published to PyPI
+    or npm, and the SDK source is not yet public.** `pip install ppx-client`
+    and `npm i @ppx/client` both fail today. Those names are reserved intent.
 
-### TypeScript
+    The code below shows the **shape** of a PPX integration using the planned
+    client API. It is not runnable today. Until the SDKs are released, make
+    the same calls directly against the HTTP binding — every SDK method here
+    is a thin wrapper over one documented HTTP request.
 
-```bash
-git clone https://github.com/Blazing-Customs/ppx-sdks
-cd ppx-sdks/typescript/client && npm install && npm run build
-# then point your app at the built package
-npm i /path/to/ppx-sdks/typescript/client
-```
-
-### Python
-
-```bash
-git clone https://github.com/Blazing-Customs/ppx-sdks
-pip install -e ppx-sdks/python/ppx-client
-```
-
-Both SDKs expose the same concepts — pick whichever matches your stack.
-The examples below are TypeScript; the Python shape is essentially
-identical.
-
-Nothing here *requires* an SDK: every call is plain HTTP against the
-[HTTP binding](../bindings/http.md), so `fetch` or `httpx` works too.
+The examples are TypeScript; the Python shape is essentially identical.
 
 ---
 
