@@ -35,20 +35,35 @@ If you're on the reference provider, `scripts/seed_dev_data.py` creates
 `fragrance-demo` and `travel-demo` out of the box — use those or add
 your own.
 
+!!! tip "The examples below use `fragrance-demo`"
+
+    That way they run against a freshly seeded provider with no extra
+    setup. Swap in your own `client_id` once you have registered one.
+    Passing a `client_id` the provider does not know returns
+    `404 unknown client_id: …`.
+
 ---
 
 ## 1. Install an SDK
 
-!!! warning "There is no SDK to install yet"
+The TypeScript client is published, and steps 2–6 use it:
 
-    PPX is a draft specification. **No PPX package has been published to PyPI
-    or npm, and the SDK source is not yet public.** `pip install ppx-client`
-    and `npm i @ppx/client` both fail today. Those names are reserved intent.
+```bash
+npm i @blazing-customs/ppx-client
+```
 
-    The code below shows the **shape** of a PPX integration using the planned
-    client API. It is not runnable today. Until the SDKs are released, make
-    the same calls directly against the HTTP binding — every SDK method here
-    is a thin wrapper over one documented HTTP request.
+!!! note "Alpha, tracking a draft spec"
+
+    Current version `0.1.0-alpha.1`. PPX is still a **draft**
+    specification, so expect breaking changes between alphas.
+
+!!! warning "The Python packages are not on PyPI yet"
+
+    `pip install ppx-client` / `ppx-langchain` still 404. This affects
+    **step 7 only** — steps 2–6 are TypeScript and run today. Until the
+    Python packages ship, make the same calls directly against the HTTP
+    binding; every SDK method is a thin wrapper over one documented HTTP
+    request.
 
 The examples are TypeScript; the Python shape is essentially identical.
 
@@ -57,12 +72,12 @@ The examples are TypeScript; the Python shape is essentially identical.
 ## 2. Request a scoped grant
 
 ```ts
-import { PpxClient, consentRedirectUrl } from "@ppx/client";
+import { PpxClient, consentRedirectUrl } from "@blazing-customs/ppx-client";
 
 const ppx = new PpxClient({ baseUrl: "http://localhost:7700" });
 
 const { grant_request_id } = await ppx.requestGrant({
-  client_id: "scent-advisor",
+  client_id: "fragrance-demo",
   subject_id: "did:example:user-demo-0001",  // whose profile you're asking about
   purposes: ["recommendation", "explanation"],
   allowed_domains: ["fragrance"],
@@ -115,7 +130,7 @@ Save `token.grant_id` to `localStorage` — you'll reuse it on return
 visits to skip the consent flow.
 
 ```ts
-localStorage.setItem("scent-advisor.grant", token.grant_id);
+localStorage.setItem("fragrance-demo.grant", token.grant_id);
 ```
 
 ---
@@ -147,17 +162,17 @@ outside the grant — are silently omitted.
 On the next page load, check localStorage and re-mint directly:
 
 ```ts
-import { PpxGrantRevokedError } from "@ppx/client";
+import { PpxGrantRevokedError } from "@blazing-customs/ppx-client";
 
-const cached = localStorage.getItem("scent-advisor.grant");
+const cached = localStorage.getItem("fragrance-demo.grant");
 if (cached) {
   try {
-    const token = await ppx.refresh("scent-advisor", cached);
+    const token = await ppx.refresh("fragrance-demo", cached);
     // you're back in business — fetch the profile as above
   } catch (err) {
     if (err instanceof PpxGrantRevokedError) {
       // user revoked at the provider; clear and prompt again
-      localStorage.removeItem("scent-advisor.grant");
+      localStorage.removeItem("fragrance-demo.grant");
       // → fall back to step 2
     } else throw err;
   }
