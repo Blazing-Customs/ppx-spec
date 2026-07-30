@@ -67,5 +67,23 @@ PPX_PROVIDER_URL=https://your-provider.example.com pytest
 ## Contributing
 
 PPX is a draft proposal. Early contributions — especially review of the consent
-model, domain extensions, and binding mappings — are welcome. See
+model, domain extensions, and binding mappings — are welcome. Start with
+[`CONTRIBUTING.md`](CONTRIBUTING.md); substantive changes use
 [`governance/PROPOSAL-TEMPLATE.md`](governance/PROPOSAL-TEMPLATE.md).
+
+Security and privacy weaknesses: see [`SECURITY.md`](SECURITY.md). Please
+report those privately rather than as a public issue.
+
+## Maturity — what is and is not real
+
+Being explicit, because a draft standard is easy to over-read:
+
+- **Real:** the normative spec, 11 JSON Schemas valid against Draft 2020-12,
+  valid examples for each, five binding documents, a conformance suite, and
+  the reference provider's backend.
+- **Not real yet:** there is **no released SDK** — no PPX package is on PyPI
+  or npm. The reference provider is **not hosted anywhere public**; it runs
+  locally via `docker compose`. The conformance suite's schema-level tests run
+  offline, but the rest need a live provider you supply.
+- **Not stable:** `v0.1.0-draft` is pre-standardization. Breaking changes are
+  expected before 1.0. Do not put real user data behind it yet.

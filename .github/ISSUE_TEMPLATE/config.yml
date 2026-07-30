@@ -1,0 +1,11 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Read the spec
+    url: https://blazing-customs.github.io/ppx-spec/spec/
+    about: The normative v0.1 specification, rendered.
+  - name: Reference provider
+    url: https://github.com/Blazing-Customs/ppx-provider
+    about: Bugs in the FastAPI/Keycloak/Next.js reference implementation go here, not in the spec repo.
+  - name: Report a security or privacy weakness
+    url: https://github.com/Blazing-Customs/ppx-spec/security/advisories/new
+    about: Please report consent-model and data-leak weaknesses privately rather than as a public issue.

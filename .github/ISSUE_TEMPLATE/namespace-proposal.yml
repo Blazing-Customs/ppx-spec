@@ -1,0 +1,52 @@
+name: Namespace or extension proposal
+description: Propose a new domain namespace, or a change to an existing one.
+labels: ["extension", "proposal"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Read [`governance/NAMESPACE-REGISTRATION.md`](https://github.com/Blazing-Customs/ppx-spec/blob/main/governance/NAMESPACE-REGISTRATION.md)
+        first. This issue is the discussion step; a full proposal using
+        [`governance/PROPOSAL-TEMPLATE.md`](https://github.com/Blazing-Customs/ppx-spec/blob/main/governance/PROPOSAL-TEMPLATE.md)
+        comes with the pull request.
+
+  - type: input
+    id: namespace
+    attributes:
+      label: Namespace
+      placeholder: "media"
+    validations:
+      required: true
+
+  - type: textarea
+    id: why
+    attributes:
+      label: What preferences does this namespace carry that core cannot
+      description: If the claims map onto existing `core` traits, say why a separate namespace is still the right call.
+    validations:
+      required: true
+
+  - type: textarea
+    id: claims
+    attributes:
+      label: Proposed claim keys
+      description: Key, type, and one example value each. A rough list is fine.
+    validations:
+      required: true
+
+  - type: textarea
+    id: sensitivity
+    attributes:
+      label: Sensitivity and cross-domain behaviour
+      description: |
+        Could any claim here reveal a protected characteristic, directly or by
+        inference? What should `cross_domain_transfer` default to, and which
+        `core` traits should these map down to when transfer is permitted?
+    validations:
+      required: true
+
+  - type: input
+    id: implementer
+    attributes:
+      label: Who intends to implement it
+      description: Optional, but a namespace with a committed implementer moves faster.

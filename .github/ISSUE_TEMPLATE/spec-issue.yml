@@ -1,0 +1,52 @@
+name: Spec problem
+description: Something in the specification is wrong, ambiguous, or unimplementable.
+labels: ["spec"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        PPX is at **v0.1.0-draft**. Breaking changes are expected, so do not
+        soften a report because it would be inconvenient to fix.
+
+  - type: input
+    id: location
+    attributes:
+      label: Where
+      description: Section number, or the file and heading.
+      placeholder: "SPEC.md §6.3 — cross-domain transfer"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Kind of problem
+      options:
+        - Ambiguous — two implementations could read it differently
+        - Wrong — it says something that cannot hold
+        - Unimplementable — correct but nobody can build it
+        - Under-specified — a real case is not covered
+        - Consent/privacy weakness that is safe to discuss publicly
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What the spec says, and why that is a problem
+      description: Quote the text. Then give a concrete case where following it produces a bad result.
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: What it should say instead
+      description: Optional. A rough direction is fine — you do not need finished wording.
+
+  - type: checkboxes
+    id: breaking
+    attributes:
+      label: Impact
+      options:
+        - label: Fixing this would change the wire format or invalidate currently-valid payloads
