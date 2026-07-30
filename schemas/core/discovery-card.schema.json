@@ -73,7 +73,12 @@
       "type": "object",
       "properties": {
         "profile_signatures": { "type": "boolean" },
-        "grant_signatures": { "type": "boolean" }
+        "grant_signatures": { "type": "boolean" },
+        "grant_jwks_uri": {
+          "type": "string",
+          "format": "uri",
+          "description": "URL of the provider's grant-signing public keys in JWKS format. Third parties verify grant-scoped tokens against these keys without calling the provider API. Stable across deploys; changes only on key rotation (which adds a new kid to the JWKS document)."
+        }
       },
       "additionalProperties": false
     },
