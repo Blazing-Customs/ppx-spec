@@ -5,17 +5,15 @@ site_description: Portable, user-owned, consented preference and context profile
 # rather than compete.
 site_url: https://ppx.dev/
 
-# repo_url / edit_uri are DELIBERATELY UNSET while Blazing-Customs/ppx-spec is
-# private. Setting them renders a repo link and an "Edit this page" button on
-# every page that 404s for everyone who is not a collaborator - the single
-# biggest source of dead links this site has had. Restore both the moment the
-# repository is made public:
-#
-#   repo_url: https://github.com/Blazing-Customs/ppx-spec
-#   repo_name: Blazing-Customs/ppx-spec
-#   edit_uri: edit/main/site/docs/
-#
-# and drop `content.action.edit` from theme.features until then.
+# Restored 2026-07-30 when the repository was made public. These render a repo
+# link and an "Edit this page" button on every page; while ppx-spec was private
+# they 404'd for everyone who was not a collaborator. If it ever goes private
+# again, unset all three and re-comment `content.action.edit` below - and note
+# that hooks/repo_links.py already declines to emit source links when repo_url
+# is empty, so it degrades correctly on its own.
+repo_url: https://github.com/Blazing-Customs/ppx-spec
+repo_name: Blazing-Customs/ppx-spec
+edit_uri: edit/main/site/docs/
 copyright: >
   &copy; 2026 PPX contributors. Spec prose
   <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>;
@@ -49,7 +47,7 @@ theme:
         icon: material/weather-sunny
         name: Switch to light mode
   features:
-    # - content.action.edit   # re-enable together with repo_url/edit_uri above
+    - content.action.edit
     - content.code.copy
     - content.tabs.link
     - navigation.instant

@@ -53,20 +53,20 @@ fi
 
 echo "==> dry run"
 rsync -rn --delete --itemize-changes \
-  --exclude='.htaccess' \
+  --exclude='.htaccess*' \
   --exclude='/ppx' \
   --exclude='/.well-known' \
   --exclude='/cgi-bin' \
-  --exclude='/index.html.bak-*' \
+  --exclude='*.bak-*' \
   ./ "$HOST:$DEST" | grep '^\*deleting' || echo "    (no deletions)"
 
 echo "==> deploying"
 rsync -rz --delete \
-  --exclude='.htaccess' \
+  --exclude='.htaccess*' \
   --exclude='/ppx' \
   --exclude='/.well-known' \
   --exclude='/cgi-bin' \
-  --exclude='/index.html.bak-*' \
+  --exclude='*.bak-*' \
   ./ "$HOST:$DEST"
 
 echo "==> post-deploy checks"
