@@ -55,6 +55,6 @@
 
   <!-- footer -->
   <g font-family="'Inter','Segoe UI',system-ui,sans-serif" fill="#a78bfa">
-    <text x="410" y="580" font-size="20" font-weight="500" opacity="0.85">blazing-customs.github.io/ppx-spec</text>
+    <text x="410" y="580" font-size="20" font-weight="500" opacity="0.85">ppx.dev</text>
   </g>
 </svg>

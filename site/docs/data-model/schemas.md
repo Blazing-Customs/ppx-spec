@@ -16,22 +16,22 @@ documents. They are the **authoritative source** for structural constraints.
 | `extension-descriptor` | [JSON][ed-json] | Domain vocabulary descriptor. |
 | `derived-view` | [JSON][dv-json] | Task-scoped projection over one or more profiles. |
 
-[p-json]: https://github.com/Blazing-Customs/ppx-spec/blob/main/schemas/core/profile.schema.json
-[c-json]: https://github.com/Blazing-Customs/ppx-spec/blob/main/schemas/core/claim.schema.json
-[cm-json]: https://github.com/Blazing-Customs/ppx-spec/blob/main/schemas/core/context-modifier.schema.json
-[g-json]: https://github.com/Blazing-Customs/ppx-spec/blob/main/schemas/core/consent-grant.schema.json
-[e-json]: https://github.com/Blazing-Customs/ppx-spec/blob/main/schemas/core/evidence-ref.schema.json
-[d-json]: https://github.com/Blazing-Customs/ppx-spec/blob/main/schemas/core/discovery-card.schema.json
-[ed-json]: https://github.com/Blazing-Customs/ppx-spec/blob/main/schemas/core/extension-descriptor.schema.json
-[dv-json]: https://github.com/Blazing-Customs/ppx-spec/blob/main/schemas/core/derived-view.schema.json
+[p-json]: https://ppx.dev/schemas/core/profile.schema.json
+[c-json]: https://ppx.dev/schemas/core/claim.schema.json
+[cm-json]: https://ppx.dev/schemas/core/context-modifier.schema.json
+[g-json]: https://ppx.dev/schemas/core/consent-grant.schema.json
+[e-json]: https://ppx.dev/schemas/core/evidence-ref.schema.json
+[d-json]: https://ppx.dev/schemas/core/discovery-card.schema.json
+[ed-json]: https://ppx.dev/schemas/core/extension-descriptor.schema.json
+[dv-json]: https://ppx.dev/schemas/core/derived-view.schema.json
 
 ## Extension schemas
 
 | Namespace | Raw |
 |---|---|
-| `core` | [JSON](https://github.com/Blazing-Customs/ppx-spec/blob/main/schemas/extensions/core.schema.json) |
-| `fragrance` | [JSON](https://github.com/Blazing-Customs/ppx-spec/blob/main/schemas/extensions/fragrance.schema.json) |
-| `travel` | [JSON](https://github.com/Blazing-Customs/ppx-spec/blob/main/schemas/extensions/travel.schema.json) |
+| `core` | [JSON](https://ppx.dev/schemas/extensions/core.schema.json) |
+| `fragrance` | [JSON](https://ppx.dev/schemas/extensions/fragrance.schema.json) |
+| `travel` | [JSON](https://ppx.dev/schemas/extensions/travel.schema.json) |
 
 ## Validating against the schemas
 

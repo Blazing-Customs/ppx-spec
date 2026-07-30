@@ -20,7 +20,7 @@ This follows the precedent of adjacent standards — MCP's `/.well-known/mcp.jso
 ## Schema
 
 The discovery card MUST validate against
-[`schemas/core/discovery-card.schema.json`](https://github.com/Blazing-Customs/ppx-spec/blob/main/schemas/core/discovery-card.schema.json).
+[`schemas/core/discovery-card.schema.json`](https://ppx.dev/schemas/core/discovery-card.schema.json).
 
 ## Required fields
 

@@ -49,4 +49,4 @@ The order of modifier application SHOULD be stable (alphabetical by
 
 ## See also
 
-- [Schema: context-modifier.schema.json](https://github.com/Blazing-Customs/ppx-spec/blob/main/schemas/core/context-modifier.schema.json)
+- [Schema: context-modifier.schema.json](https://ppx.dev/schemas/core/context-modifier.schema.json)

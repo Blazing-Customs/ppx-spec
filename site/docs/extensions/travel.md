@@ -25,4 +25,4 @@ Vocabulary for travel and environment preference claims.
 
 ## Schema
 
-[Raw JSON](https://github.com/Blazing-Customs/ppx-spec/blob/main/schemas/extensions/travel.schema.json)
+[Raw JSON](https://ppx.dev/schemas/extensions/travel.schema.json)

@@ -41,8 +41,18 @@ _TO_DOCS = {
     "examples": "data-model/examples.md",
 }
 
-# Repo paths with no site equivalent fall back to the source on GitHub.
-_TO_SOURCE = ("schemas/", "examples/", "conformance", "registry/")
+# Repo paths with no rendered site page.
+#
+# schemas/ and examples/ are PUBLISHED at ppx.dev - those URLs are the schema
+# `$id` values, so they are both the correct public target and guaranteed to
+# resolve for anyone. Prefer them over a source link.
+_TO_PUBLIC_URL = ("schemas/", "examples/")
+_PUBLIC_BASE = "https://ppx.dev/"
+
+# Everything else exists only in the repository. While that repository is
+# private these links 404 for every reader who is not a collaborator, so we
+# emit nothing rather than a known-dead link.
+_TO_SOURCE = ("conformance", "registry/")
 
 # Markdown inline links plus reference definitions.
 _LINK = re.compile(r"(?<=]\()\s*(?P<target><[^>]+>|[^)\s]+)(?P<tail>[^)]*)\)")
@@ -94,7 +104,15 @@ def _rewrite_target(target: str, page_dir: str, escape_depth: int, repo_url: str
         rebased = posixpath.relpath(docs_target, page_dir or ".")
         return rebased + sep + fragment
 
+    if repo_path.startswith(_TO_PUBLIC_URL):
+        return _PUBLIC_BASE + repo_path + sep + fragment
+
     if repo_path.startswith(_TO_SOURCE):
+        # No repo_url configured means the repository is private (see
+        # mkdocs.yml). Emitting `/blob/main/...` would be a guaranteed 404 on
+        # the published site, so leave the original link for mkdocs to report.
+        if not repo_url:
+            return None
         return _blob_url(repo_url, repo_path) + sep + fragment
 
     return None

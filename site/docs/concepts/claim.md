@@ -62,4 +62,4 @@ aversion, tendency, constraint, setting, or derived signal.
 ## See also
 
 - [Provenance & confidence](provenance.md)
-- [Schema: claim.schema.json](https://github.com/Blazing-Customs/ppx-spec/blob/main/schemas/core/claim.schema.json)
+- [Schema: claim.schema.json](https://ppx.dev/schemas/core/claim.schema.json)

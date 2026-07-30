@@ -1,15 +1,34 @@
 site_name: PPX — Preference Profile Exchange
 site_description: Portable, user-owned, consented preference and context profiles for agent ecosystems.
-site_url: https://blazing-customs.github.io/ppx-spec/
-repo_url: https://github.com/Blazing-Customs/ppx-spec
-repo_name: Blazing-Customs/ppx-spec
-edit_uri: edit/main/site/docs/
+# The standard lives at its own name. GitHub Pages still builds this site and
+# now emits <link rel="canonical"> pointing here, so the two copies consolidate
+# rather than compete.
+site_url: https://ppx.dev/
+
+# repo_url / edit_uri are DELIBERATELY UNSET while Blazing-Customs/ppx-spec is
+# private. Setting them renders a repo link and an "Edit this page" button on
+# every page that 404s for everyone who is not a collaborator - the single
+# biggest source of dead links this site has had. Restore both the moment the
+# repository is made public:
+#
+#   repo_url: https://github.com/Blazing-Customs/ppx-spec
+#   repo_name: Blazing-Customs/ppx-spec
+#   edit_uri: edit/main/site/docs/
+#
+# and drop `content.action.edit` from theme.features until then.
 copyright: >
   &copy; 2026 PPX contributors. Spec prose
   <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>;
   schemas and code <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache 2.0</a>.
 
 docs_dir: docs
+
+# registry/ is unfinished work: it is not in the nav, its `registry_providers`
+# macro renders as raw Jinja, and it publicly describes a PAID certification
+# tier. Excluding it keeps it out of the build AND out of sitemap.xml, so it is
+# neither reachable nor crawlable until someone decides to ship it.
+exclude_docs: |
+  registry/
 
 theme:
   name: material
@@ -30,7 +49,7 @@ theme:
         icon: material/weather-sunny
         name: Switch to light mode
   features:
-    - content.action.edit
+    # - content.action.edit   # re-enable together with repo_url/edit_uri above
     - content.code.copy
     - content.tabs.link
     - navigation.instant

@@ -51,4 +51,4 @@ Grants may opt into per-access logging and writeback notifications:
 ## See also
 
 - [Consent & trust](../consent-and-trust.md)
-- [Schema: consent-grant.schema.json](https://github.com/Blazing-Customs/ppx-spec/blob/main/schemas/core/consent-grant.schema.json)
+- [Schema: consent-grant.schema.json](https://ppx.dev/schemas/core/consent-grant.schema.json)

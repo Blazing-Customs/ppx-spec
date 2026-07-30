@@ -27,4 +27,4 @@ demo.
 
 ## Schema
 
-[Raw JSON](https://github.com/Blazing-Customs/ppx-spec/blob/main/schemas/extensions/fragrance.schema.json)
+[Raw JSON](https://ppx.dev/schemas/extensions/fragrance.schema.json)

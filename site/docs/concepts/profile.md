@@ -56,5 +56,5 @@ overrides it:
 
 ## See also
 
-- [Schema: profile.schema.json](https://github.com/Blazing-Customs/ppx-spec/blob/main/schemas/core/profile.schema.json)
-- [Example: profile-basic.json](https://github.com/Blazing-Customs/ppx-spec/blob/main/examples/profile-basic.json)
+- [Schema: profile.schema.json](https://ppx.dev/schemas/core/profile.schema.json)
+- [Example: profile-basic.json](https://ppx.dev/examples/profile-basic.json)

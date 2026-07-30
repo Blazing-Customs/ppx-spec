@@ -21,10 +21,10 @@ corresponding JSON Schema 2020-12 file:
 - [`discovery-card.schema.json`][disc]
 
 [schemas]: https://github.com/Blazing-Customs/ppx-spec/tree/main/schemas
-[profile]: https://github.com/Blazing-Customs/ppx-spec/blob/main/schemas/core/profile.schema.json
-[claim]: https://github.com/Blazing-Customs/ppx-spec/blob/main/schemas/core/claim.schema.json
-[grant]: https://github.com/Blazing-Customs/ppx-spec/blob/main/schemas/core/consent-grant.schema.json
-[disc]: https://github.com/Blazing-Customs/ppx-spec/blob/main/schemas/core/discovery-card.schema.json
+[profile]: https://ppx.dev/schemas/core/profile.schema.json
+[claim]: https://ppx.dev/schemas/core/claim.schema.json
+[grant]: https://ppx.dev/schemas/core/consent-grant.schema.json
+[disc]: https://ppx.dev/schemas/core/discovery-card.schema.json
 
 ## 3. Run the conformance suite
 

@@ -26,4 +26,4 @@ keys take values in `[0.0, 1.0]` with `units = normalized_0_1`.
 
 ## Schema
 
-[Raw JSON](https://github.com/Blazing-Customs/ppx-spec/blob/main/schemas/extensions/core.schema.json)
+[Raw JSON](https://ppx.dev/schemas/extensions/core.schema.json)
