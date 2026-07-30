@@ -5,7 +5,7 @@ public site yet, because a reader could not act on it.
 
 | File | Blocked on |
 | --- | --- |
-| `30-minute-integrator.md` | **One blocker left: `ppx-provider` is private.** The tutorial's prerequisite is a running provider via `docker compose up` from that repo, which a stranger cannot clone. Move to `site/docs/` once `ppx-provider` is public, or once a hosted demo provider exists that readers can point at. |
+| `30-minute-integrator.md` | **One blocker left: no public provider implements the consent-grant flow.** The tutorial's prerequisite is a running provider via `docker compose up` from `ppx-provider`, which is private. A public PHP provider now exists at `https://ppx.dev/ppx`, but it implements only `profile/effective`, `profile/propose-updates` and `consent/revoke` — **not** `consent/request`, `consent/approve` or `consent/token`, so tutorial steps 2–4 cannot run against it. Clears when `ppx-provider` goes public, or when the PHP provider grows the grant-issuance endpoints. |
 
 Move a file into `site/docs/` and add it to the `nav:` in `site/mkdocs.yml`
 when its blocker clears.
@@ -35,3 +35,25 @@ Two documentation fixes came out of that run:
    registration, but the code did not run as written.
 2. Step 1 no longer claims no SDK is published; it now installs the
    TypeScript client and scopes the "not published" warning to step 7.
+
+## Spec gaps found by running two implementations against one client
+
+Both surfaced on 2026-07-30 when the published `ppx-client` was pointed at
+the independent PHP provider. Neither is a client-only issue; both are
+places the specification is thinner than it looks.
+
+1. **JWKS location is discovered, not fixed — but that is easy to miss.**
+   `SPEC.md` pins only `/.well-known/ppx-card.json`; the grant-signing key
+   set is wherever `signing.grant_jwks_uri` in the card points. The client
+   had hardcoded the Python reference provider's
+   `/.well-known/ppx-grant-jwks.json` and 404'd against the PHP provider,
+   which publishes `/.well-known/jwks.json`. The client now follows the
+   card. Worth stating explicitly in the binding.
+
+2. **The `/v1/profile/effective` response body is not specified.**
+   `profile.schema.json` requires `profile_id`, but that schema describes a
+   stored Profile *document*; neither `SPEC.md` nor `bindings/http.md`
+   defines what this endpoint returns. The Python provider returns
+   `profile_id`; the PHP provider returns `subject_id` + `provider_id` +
+   `generated_at`. Both pass conformance, because the suite does not assert
+   the shape. **This needs a normative decision and a conformance test.**
