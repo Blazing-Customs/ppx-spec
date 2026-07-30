@@ -92,10 +92,14 @@ plugins:
 # include-markdown and would otherwise resolve outside the published site.
 hooks:
   - hooks/repo_links.py
+  # Publishes schemas/ and examples/ at the site root so each schema's `$id`
+  # dereferences. Verifies byte-identity with the repo on every build.
+  - hooks/publish_schemas.py
 
 nav:
   - Home: index.md
   - Getting started: getting-started.md
+  - Implementations: implementations.md
   - Specification:
       - Read the spec: spec.md
       - Conformance levels: conformance.md
