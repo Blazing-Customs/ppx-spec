@@ -20,7 +20,7 @@ A grant scopes access on six axes:
 5. **Operations** — read, query, propose_update, confirm_update, export.
 6. **Time** — every grant has an `expires_at`.
 
-See [`ConsentGrant` schema](../schemas/core/consent-grant.schema.json) for the
+See [`ConsentGrant` schema](https://github.com/Blazing-Customs/ppx-spec/blob/main/schemas/core/consent-grant.schema.json) for the
 complete shape.
 
 ## Cross-domain transfer

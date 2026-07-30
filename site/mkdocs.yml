@@ -88,9 +88,15 @@ plugins:
   - search
   - include-markdown
 
+# Repairs repo-root links (SPEC.md, governance/, bindings/) that arrive via
+# include-markdown and would otherwise resolve outside the published site.
+hooks:
+  - hooks/repo_links.py
+
 nav:
   - Home: index.md
   - Getting started: getting-started.md
+  - Tutorial: tutorials/30-minute-integrator.md
   - Specification:
       - Read the spec: spec.md
       - Conformance levels: conformance.md
@@ -111,12 +117,14 @@ nav:
       - fragrance: extensions/fragrance.md
       - travel: extensions/travel.md
   - Bindings:
+      - Overview: bindings/index.md
       - MCP: bindings/mcp.md
       - A2A: bindings/a2a.md
       - AG-UI: bindings/ag-ui.md
       - A2UI: bindings/a2ui.md
       - HTTP: bindings/http.md
   - Governance:
+      - Overview: governance/index.md
       - Namespace registration: governance/namespace-registration.md
       - Versioning: governance/versioning.md
       - Proposal template: governance/proposal-template.md
