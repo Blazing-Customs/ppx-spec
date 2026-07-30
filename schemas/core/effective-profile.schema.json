@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ppx.dev/schemas/core/effective-profile.schema.json",
+  "title": "PPX Effective Profile",
+  "description": "Response body of POST /v1/profile/effective and POST /v1/profile/query. This is a RESOLVED VIEW computed for one grant under one context, not a stored Profile document — see profile.schema.json for the latter. The distinction matters: a resolved view has no identity of its own and need not be persisted, which is why `profile_id` is optional here but required there.",
+  "type": "object",
+  "required": ["ppx_version", "subject_id", "provider_id", "generated_at", "claims", "applied_modifiers"],
+  "properties": {
+    "ppx_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+(-[A-Za-z0-9.-]+)?$",
+      "description": "Wire version of this document."
+    },
+    "subject_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Whose profile this resolves. REQUIRED: a grantee holding several grants must be able to tell responses apart without trusting request/response ordering."
+    },
+    "provider_id": {
+      "type": "string",
+      "pattern": "^ppx:provider:[A-Za-z0-9_.:-]+$",
+      "description": "Which provider resolved it. REQUIRED so a claim can be attributed when a grantee federates across providers."
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When this view was resolved. REQUIRED because context modifiers make the result time- and context-dependent: the same grant and the same context can legitimately return different values later, and a cached copy with no timestamp cannot be reasoned about."
+    },
+    "claims": {
+      "type": "array",
+      "items": { "$ref": "https://ppx.dev/schemas/core/claim.schema.json" },
+      "description": "Claims visible under the grant, after modifiers. Claims outside the grant are omitted silently — their absence MUST NOT be distinguishable from non-existence."
+    },
+    "applied_modifiers": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Identifiers of the context modifiers applied while resolving. REQUIRED, and MAY be empty. Empty means 'none applied'; the field's absence would be indistinguishable from 'this provider does not report modifiers', which defeats the explainability the field exists for."
+    },
+    "profile_id": {
+      "type": "string",
+      "description": "OPTIONAL. Identifier of the underlying stored profile, where the provider exposes one. Providers MAY omit it, and a grantee MUST NOT depend on it: withholding a stable cross-grant identifier is a legitimate privacy choice."
+    },
+    "grant": {
+      "type": "object",
+      "description": "OPTIONAL echo of the grant this was resolved under, so a consumer or auditor can verify the response falls inside what was authorized.",
+      "properties": {
+        "grant_id": { "type": "string" },
+        "allowed_namespaces": { "type": "array", "items": { "type": "string" } },
+        "allowed_claim_keys": { "type": "array", "items": { "type": "string" } },
+        "allowed_domains": { "type": "array", "items": { "type": "string" } },
+        "purposes": { "type": "array", "items": { "type": "string" } },
+        "cross_domain_transfer": { "type": "string" },
+        "writeback_policy": { "type": "string" },
+        "expires_at": { "type": "string", "format": "date-time" }
+      }
+    },
+    "writeback": {
+      "type": "string",
+      "enum": ["none", "proposal_created", "pending"],
+      "description": "OPTIONAL. Present when the call also carried a write-back."
+    }
+  },
+  "additionalProperties": true
+}

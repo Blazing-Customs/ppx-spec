@@ -99,6 +99,7 @@ hooks:
 nav:
   - Home: index.md
   - Getting started: getting-started.md
+  - 30-minute integrator tutorial: tutorial-30-minute-integrator.md
   - Implementations: implementations.md
   - Specification:
       - Read the spec: spec.md

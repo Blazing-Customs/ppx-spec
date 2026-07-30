@@ -13,27 +13,29 @@ you'll have:
 
 Total code: ~80 lines of TypeScript (or Python) + ~30 lines of agent glue.
 
-> **Prerequisites.** A running PPX provider at some URL — the reference
-> provider ([Blazing-Customs/ppx-provider](https://github.com/Blazing-Customs/ppx-provider))
-> spins up on `docker compose up` and exposes everything you need. The
-> examples below assume `http://localhost:7700`; swap in your provider.
+> **Prerequisites: none.** Every step below runs against the public
+> demonstration provider at **`https://ppx.dev/ppx`** — no signup, no
+> Docker, no local stack. It is seeded with one subject and serves
+> demonstration data only.
+>
+> Point `baseUrl` at your own provider when you have one; nothing in the
+> code changes.
 
 ---
 
 ## 0. Register your app with the provider
 
 A PPX provider needs to know what `client_id` your app uses so grant
-requests can be tied to a real grantee. In the reference provider this
-is rows in the `api_clients` table; other providers expose a
-self-service form. You'll need:
+requests can be tied to a real grantee. You'll need:
 
-- A `client_id` (string, e.g. `scent-advisor`)
-- A `grantee_id` DID the provider associates with you (e.g. `did:example:agent:scent-advisor`)
+- A `client_id` (string)
+- A `grantee_id` DID the provider associates with you
 - An allowed redirect URL for the consent bounce-back
 
-If you're on the reference provider, `scripts/seed_dev_data.py` creates
-`fragrance-demo` and `travel-demo` out of the box — use those or add
-your own.
+**On the public demo provider this is already done for you**: `fragrance-demo`
+and `travel-demo` are registered, and the examples below use
+`fragrance-demo`. Passing a `client_id` the provider does not know returns
+`404 unknown_client` — grants are never issued to unregistered grantees.
 
 !!! tip "The examples below use `fragrance-demo`"
 
@@ -74,9 +76,9 @@ The examples are TypeScript; the Python shape is essentially identical.
 ```ts
 import { PpxClient, consentRedirectUrl } from "@blazing-customs/ppx-client";
 
-const ppx = new PpxClient({ baseUrl: "http://localhost:7700" });
+const ppx = new PpxClient({ baseUrl: "https://ppx.dev/ppx" });
 
-const { grant_request_id } = await ppx.requestGrant({
+const { grant_request_id, consent_url } = await ppx.requestGrant({
   client_id: "fragrance-demo",
   subject_id: "did:example:user-demo-0001",  // whose profile you're asking about
   purposes: ["recommendation", "explanation"],
@@ -98,11 +100,11 @@ has to approve.
 
 ```ts
 const returnTo = `${window.location.origin}/callback`;
-window.location.href = consentRedirectUrl(
-  "http://localhost:7703",   // provider frontend, not API
-  grant_request_id,
-  returnTo,
-);
+
+// Don't hardcode the consent host: the consent UI may live on a different
+// origin from the API. `POST /v1/consent/request` already told you where
+// to send the user.
+window.location.href = `${consent_url}?return_to=${encodeURIComponent(returnTo)}`;
 ```
 
 The provider takes over: it authenticates the user (Keycloak on the
@@ -195,7 +197,7 @@ from ppx_client import PpxClient
 from ppx_langchain import ppx_preference_tool
 from langchain_openai import ChatOpenAI
 
-ppx = PpxClient("http://localhost:7700")
+ppx = PpxClient("https://ppx.dev/ppx")
 tool = ppx_preference_tool(ppx, grant_token=my_grant_token)
 
 llm = ChatOpenAI(model="gpt-4o-mini").bind_tools([tool])
@@ -215,7 +217,7 @@ from google.adk.tools import FunctionTool
 from ppx_client import PpxClient
 from ppx_google_adk import build_preference_tool, fetch_preference_context
 
-ppx = PpxClient("http://localhost:7700")
+ppx = PpxClient("https://ppx.dev/ppx")
 preferences = fetch_preference_context(
     ppx, grant_token=my_grant_token,
     requested_namespaces=["core", "fragrance"],
@@ -243,8 +245,12 @@ session start, then let it refine on demand via the tool.
 
 - Your app **never** sees claims outside the grant. Keys you didn't list
   are silently redacted, not rejected.
-- The user can revoke at any time in the provider's connected-apps page.
-  The next call you make (refresh or profile read) returns `410 Gone`.
+- The user can revoke at any time. The next `refresh` returns `410 Gone`,
+  and any read with an already-issued token starts returning `403` —
+  revocation is immediate, not eventually-consistent.
+- The user can approve **less** than you asked for. Always read what you
+  actually got from the `grant` block in the response rather than assuming
+  you were granted what you requested.
 - Cross-domain transfer (using data derived in one domain — say fragrance —
   in another, say travel) **requires explicit `allow_with_review`** in
   the grant. Anything else is denied at the grant engine.
@@ -261,10 +267,10 @@ conforming provider does. Use the conformance suite:
 ```bash
 git clone https://github.com/Blazing-Customs/ppx-spec
 pip install -e ppx-spec/conformance
-ppx-conformance --provider http://localhost:7700 --level L1
+ppx-conformance --provider https://ppx.dev/ppx --level L1
 ```
 
-(Also not on PyPI yet — install it from the spec repo.)
+(The conformance suite is not on PyPI — install it from the spec repo.)
 
 Green means you're safe to link against any conforming provider, not
 just the reference one. Run it in CI.
@@ -274,13 +280,13 @@ just the reference one. Run it in CI.
 ## 10. What's next
 
 - **AG-UI consent streaming** — show live explanation text during the
-  consent flow. See [`consent-and-trust.md`](../consent-and-trust.md).
+  consent flow. See [`consent-and-trust.md`](consent-and-trust.md).
 - **MCP binding** — expose the same PPX operations as MCP tools so any
-  MCP-compatible agent can use them. See [`bindings/mcp.md`](../bindings/mcp.md).
+  MCP-compatible agent can use them. See [`bindings/mcp.md`](bindings/mcp.md).
 - **A2A binding** — call PPX from another agent. See
-  [`bindings/a2a.md`](../bindings/a2a.md).
+  [`bindings/a2a.md`](bindings/a2a.md).
 - **Extension domains** — add a new namespace beyond `core` / `fragrance` /
-  `travel`. See [`extensions/overview.md`](../extensions/overview.md).
+  `travel`. See [`extensions/overview.md`](extensions/overview.md).
 
 Total time to a working integration: ~30 minutes if you copy-paste,
 maybe 60 if you write it yourself. Either way, you now have a

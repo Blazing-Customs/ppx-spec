@@ -38,6 +38,36 @@ binding in their discovery card.
 | `POST` | `/v1/profile/confirm-updates` | bearer (elevated) | Confirm pending updates. |
 | `POST` | `/v1/export` | bearer | Full export of profile in PPX format. |
 
+#### Effective-profile response body
+
+`POST /v1/profile/query` and `POST /v1/profile/effective` MUST return a
+document valid against
+[`effective-profile.schema.json`](../schemas/core/effective-profile.schema.json).
+
+Required: `ppx_version`, `subject_id`, `provider_id`, `generated_at`,
+`claims`, `applied_modifiers`.
+
+Three notes, because each of these was a real ambiguity that two independent
+implementations resolved differently:
+
+- **This is not a stored Profile.** `profile.schema.json` describes a
+  persisted document and requires `profile_id`. A resolved view is computed
+  per grant, per context, and has no identity of its own — so `profile_id`
+  here is OPTIONAL. Providers MAY omit it (withholding a stable cross-grant
+  identifier is a legitimate privacy choice) and a grantee MUST NOT depend
+  on it.
+- **`applied_modifiers` is REQUIRED and MAY be empty.** An empty array means
+  "no modifiers were applied". Omitting the field would be indistinguishable
+  from "this provider does not report modifiers", which defeats the
+  explainability the field exists for.
+- **`generated_at` is REQUIRED** because context modifiers make the result
+  time- and context-dependent. The same grant and context can legitimately
+  resolve differently later, and a cached copy with no timestamp cannot be
+  reasoned about.
+
+Claims outside the grant are omitted silently. Their absence MUST NOT be
+distinguishable from the claim not existing.
+
 ### Consent
 
 | Method | Path | Auth | Purpose |

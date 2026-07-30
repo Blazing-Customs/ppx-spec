@@ -3,9 +3,19 @@
 Content that is finished enough to keep but would be wrong to put on the
 public site yet, because a reader could not act on it.
 
+_Nothing is currently blocked._
+
 | File | Blocked on |
 | --- | --- |
-| `30-minute-integrator.md` | **One blocker left: no public provider implements the consent-grant flow.** The tutorial's prerequisite is a running provider via `docker compose up` from `ppx-provider`, which is private. A public PHP provider now exists at `https://ppx.dev/ppx`, but it implements only `profile/effective`, `profile/propose-updates` and `consent/revoke` — **not** `consent/request`, `consent/approve` or `consent/token`, so tutorial steps 2–4 cannot run against it. Clears when `ppx-provider` goes public, or when the PHP provider grows the grant-issuance endpoints. |
+| — | — |
+
+**`30-minute-integrator.md` shipped on 2026-07-30** and now lives at
+`site/docs/tutorial-30-minute-integrator.md`. Its blocker — no public
+provider implementing the consent-grant flow — was cleared by adding
+`consent/request`, `approve`, `reject`, `token`, `refresh`, `grants` and a
+browser consent screen to the PHP provider at `https://ppx.dev/ppx`. The
+tutorial now has **no prerequisites at all**: every step runs against that
+public endpoint with no signup and no local stack.
 
 Move a file into `site/docs/` and add it to the `nav:` in `site/mkdocs.yml`
 when its blocker clears.

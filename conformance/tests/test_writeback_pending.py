@@ -12,11 +12,18 @@ def test_propose_update_stays_pending(provider_client):
     payload = {
         "claims": [
             {
+                # `type` is required by claim.schema.json. The suite omitted it,
+                # so a provider that validates proposed claims against the
+                # schema (correctly) rejected the payload with 422, while a
+                # laxer provider accepted it - the suite was rewarding the
+                # laxer behaviour.
+                "type": "preference",
                 "namespace": "fragrance",
                 "key": "projection_tolerance",
                 "value": 0.55,
                 "value_type": "float",
                 "units": "normalized_0_1",
+                "confidence": 0.6,
                 "source": {
                     "kind": "observed",
                     "origin": "conformance_test"
