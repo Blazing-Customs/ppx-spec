@@ -15,11 +15,53 @@ description: Portable, user-owned, consented preference and context profiles for
     PPX is an early-stage specification published for community review. Expect
     breaking changes before `1.0`. See [versioning policy](governance/versioning.md).
 
-!!! tip "See it work"
-    Four live applications read a real profile through the PPX consent flow —
-    a recommender, a writing assistant, and a two-person compatibility agent —
-    against a running, conformance-passing provider.
-    **[Try the live demos →](https://ppx.dev/apps/)**
+## See it work
+
+PPX isn't only a document. A **live, conformance-passing provider** runs at
+[ppx.dev/ppx](https://ppx.dev/ppx/), and four applications read a real profile
+through its consent flow — each seeing only the slice you approve, and every
+grant revocable. The same profile is reachable over the protocols agents
+already speak.
+
+<div class="grid cards" markdown>
+
+-   :material-flask-outline:{ .lg .middle } __Fragrance__
+
+    ---
+
+    A recommender composes a scent from your `fragrance` claims.
+
+    [:octicons-arrow-right-24: Open demo](https://ppx.dev/apps/fragrance/)
+
+-   :material-map-marker-path:{ .lg .middle } __Travel__
+
+    ---
+
+    A planner tailors suggestions to your `core` preferences.
+
+    [:octicons-arrow-right-24: Open demo](https://ppx.dev/apps/travel/)
+
+-   :material-pencil-outline:{ .lg .middle } __Scribe__
+
+    ---
+
+    A writing assistant adapts to how you like to communicate.
+
+    [:octicons-arrow-right-24: Open demo](https://ppx.dev/apps/scribe/)
+
+-   :material-account-heart-outline:{ .lg .middle } __Pair__
+
+    ---
+
+    Two people, one compatibility score — over **A2A**, no raw data shared.
+
+    [:octicons-arrow-right-24: Open demo](https://ppx.dev/apps/pair/)
+
+</div>
+
+[Explore the full experience :octicons-arrow-right-24:](https://ppx.dev/apps/){ .md-button .md-button--primary }
+&nbsp;
+[Connect an MCP client :octicons-arrow-right-24:](bindings/mcp.md){ .md-button }
 
 ## The positioning
 

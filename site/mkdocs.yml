@@ -115,6 +115,10 @@ hooks:
 
 nav:
   - Home: index.md
+  # External links to the live experience, so it is reachable from the top nav
+  # of every page — not only via a callout on the homepage.
+  - Try it live: https://ppx.dev/apps/
+  - Provider: https://ppx.dev/ppx/
   - Getting started: getting-started.md
   - 30-minute integrator tutorial: tutorial-30-minute-integrator.md
   - Implementations: implementations.md
