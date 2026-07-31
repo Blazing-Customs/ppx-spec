@@ -15,6 +15,12 @@ description: Portable, user-owned, consented preference and context profiles for
     PPX is an early-stage specification published for community review. Expect
     breaking changes before `1.0`. See [versioning policy](governance/versioning.md).
 
+!!! tip "See it work"
+    Four live applications read a real profile through the PPX consent flow —
+    a recommender, a writing assistant, and a two-person compatibility agent —
+    against a running, conformance-passing provider.
+    **[Try the live demos →](https://ppx.dev/apps/)**
+
 ## The positioning
 
 MCP standardizes tool and data access. A2A standardizes agent collaboration.

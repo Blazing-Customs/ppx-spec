@@ -10,6 +10,7 @@
 #                 downstream consumer, silently.
 #   /examples/    example documents referenced by the docs
 #   /ppx/         the live PPX provider (conformance 30/30)
+#   /apps/        the live demo applications + their hub (static exports)
 #   /.well-known/ discovery card and JWKS
 #
 # `mkdocs build` emits its own copies of /schemas/ and /examples/ (a hook
@@ -55,6 +56,7 @@ echo "==> dry run"
 rsync -rn --delete --itemize-changes \
   --exclude='.htaccess*' \
   --exclude='/ppx' \
+  --exclude='/apps' \
   --exclude='/.well-known' \
   --exclude='/cgi-bin' \
   --exclude='*.bak-*' \
@@ -64,6 +66,7 @@ echo "==> deploying"
 rsync -rz --delete \
   --exclude='.htaccess*' \
   --exclude='/ppx' \
+  --exclude='/apps' \
   --exclude='/.well-known' \
   --exclude='/cgi-bin' \
   --exclude='*.bak-*' \
