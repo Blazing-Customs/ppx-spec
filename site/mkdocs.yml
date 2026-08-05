@@ -88,6 +88,13 @@ markdown_extensions:
   - toc:
       permalink: true
   - pymdownx.details
+  # Material's icon shortcodes (:material-*:, :octicons-*:) are emoji-index
+  # entries. Without this the homepage grid cards render the literal text
+  # ":material-flask-outline:{ .lg .middle }" -- and attr_list leaves its
+  # braces behind too, because there is no inline element to attach them to.
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
   - pymdownx.highlight:
       anchor_linenums: true
       line_spans: __span
