@@ -28,15 +28,16 @@ the other.
 
 ### What those numbers mean
 
-The suite is **36 tests**, covering the consent-v2 protocol: PKCE (S256, with
+The suite is **39 tests**, covering the consent-v2 protocol: PKCE (S256, with
 `plain` refused), the back-channel request token, single-use authorization,
-client binding, and refresh-token rotation with reuse detection.
+client binding, refresh-token rotation with reuse detection, and the
+HTTP binding's profile-read routes.
 
 | How you run it | Result |
 | --- | --- |
 | `pytest -m schema` — no provider needed | **7 passed**, 29 deselected |
-| Against a live provider, no credentials | **12 passed, 24 skipped**, 0 failed |
-| Against a live provider, with minted tokens | **36 passed, 0 skipped, 0 failed** |
+| Against a live provider, no credentials | **12 passed, 27 skipped**, 0 failed |
+| Against a live provider, with minted tokens | **39 passed, 0 skipped, 0 failed** |
 
 The skips are not failures — they are the authenticated tests, which cannot run
 without tokens. A provider claiming full conformance must supply them: the
@@ -44,12 +45,12 @@ suite needs an access token plus purpose-built tokens for the expired-grant,
 revocation, cross-domain-denial and forbidden-writeback cases. The PHP provider
 mints all of them with `php bin/mint.php env`.
 
-Reproduce the 36/36 (measured 2026-08-04 against `https://ppx.dev/ppx`):
+Reproduce the 39/39 (measured 2026-08-05 against `https://ppx.dev/ppx`):
 
 ```bash
 php bin/mint.php env > /tmp/ppx.env   # on the provider host
 set -a; . /tmp/ppx.env; set +a
-pytest -q                             # 36 passed
+pytest -q                             # 39 passed
 ```
 
 Each run consumes its revocable grant, so re-run against freshly minted tokens.
