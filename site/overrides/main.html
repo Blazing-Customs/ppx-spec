@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{#
+  Site-wide Google Analytics 4.
+
+  This is the ONLY place the tag is declared for the docs site. Material renders
+  `extrahead` as the last thing inside <head> on every generated page, so one
+  block here covers all 32 pages (including 404.html) and any page added later.
+
+  Deliberately NOT using `extra.analytics` in mkdocs.yml: that provider wraps
+  the tag in Material's own cookie-consent machinery and rewrites the snippet.
+  The owner supplied exact bytes to install, so they are installed verbatim.
+#}
+{% block extrahead %}
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1595GXK0R5"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1595GXK0R5');
+  </script>
+
+  {#
+    The theme has `navigation.instant` on, so an in-site click swaps the page
+    via pushState instead of loading a document. gtag('config') only fires a
+    page_view on the real document load, and nothing re-runs afterwards.
+
+    Measured against production before this was added: loading / then clicking
+    through to /getting-started/ produced ONE /g/collect hit, not two. Every
+    page after the first in a visit was invisible, on all 32 pages.
+
+    Material exposes `document$`, which emits on every instant navigation.
+    Skip its first emission - gtag('config') already reported that one - and
+    send an explicit page_view for each subsequent swap.
+  #}
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      if (typeof document$ === 'undefined') { return; }
+      var first = true;
+      document$.subscribe(function () {
+        if (first) { first = false; return; }
+        gtag('event', 'page_view', {
+          page_location: location.href,
+          page_title: document.title
+        });
+      });
+    });
+  </script>
+{% endblock %}

@@ -74,11 +74,15 @@ The examples are TypeScript; the Python shape is essentially identical.
 ## 2. Request a scoped grant
 
 ```ts
-import { PpxClient, consentRedirectUrl } from "@blazing-customs/ppx-client";
+import { PpxClient, consentRedirectUrl, generatePkce } from "@blazing-customs/ppx-client";
 
 const ppx = new PpxClient({ baseUrl: "https://ppx.dev/ppx" });
 
-const { grant_request_id, consent_url } = await ppx.requestGrant({
+// PKCE is mandatory, and S256 is the only method — `plain` is refused. The
+// verifier stays in this tab; only its SHA-256 goes to the provider now.
+const pkce = await generatePkce();
+
+const { grant_request_id, consent_url, request_token } = await ppx.requestGrant({
   client_id: "fragrance-demo",
   subject_id: "did:example:user-demo-0001",  // whose profile you're asking about
   purposes: ["recommendation", "explanation"],
@@ -88,29 +92,58 @@ const { grant_request_id, consent_url } = await ppx.requestGrant({
   cross_domain_transfer: "deny",
   writeback_policy: "review_required",
   requested_duration_days: 30,
+  code_challenge: pkce.challenge,
+  code_challenge_method: "S256",
+  // Matched EXACTLY against what you registered with the provider.
+  redirect_uri: `${window.location.origin}/callback`,
 });
+
+// Stash the two secrets for the round trip. sessionStorage is tab-scoped and
+// cleared when the tab closes; neither value may ever enter a URL.
+sessionStorage.setItem(
+  "ppx.pending",
+  JSON.stringify({ grant_request_id, request_token, verifier: pkce.verifier }),
+);
 ```
 
-The provider hasn't given you anything yet — just a request ID the user
-has to approve.
+You now hold two different things, and the difference matters:
+
+| | What it is | Where it may go |
+|---|---|---|
+| `grant_request_id` | a public handle | the consent URL, logs, anywhere |
+| `request_token` | **the capability** | your app's memory only — never a URL |
+
+`request_token` is returned exactly once and is not retrievable again. The
+provider stores only its SHA-256.
+
+The provider hasn't given you access to anything yet — the user still has to
+approve.
 
 ---
 
 ## 3. Send the user to the provider's consent page
 
 ```ts
-const returnTo = `${window.location.origin}/callback`;
-
 // Don't hardcode the consent host: the consent UI may live on a different
 // origin from the API. `POST /v1/consent/request` already told you where
 // to send the user.
-window.location.href = `${consent_url}?return_to=${encodeURIComponent(returnTo)}`;
+window.location.href = consent_url;
 ```
 
-The provider takes over: it authenticates the user (Keycloak on the
-reference provider), shows them exactly what you asked for, lets them
-approve, narrow, or reject. When they're done, the browser comes back
-to `returnTo` with `?grant_request_id=…&decision=approve`.
+There is no `return_to` parameter. The destination was pinned to your
+registered `redirect_uri` when you created the request, so it cannot be
+chosen — or rewritten — by whoever opens this URL.
+
+The provider takes over: it authenticates the user, shows them exactly what
+you asked for, lets them approve, narrow, or reject. When they're done, the
+browser comes back to your registered callback with
+`?grant_request_id=…&decision=approve`.
+
+!!! warning "Treat the consent URL as public"
+    It travels through referers, browser history, proxy and CDN logs,
+    bookmarks and screenshots. That is safe here **because the id in it is
+    inert** — on its own it exchanges for nothing. Never put the
+    `request_token` or the PKCE verifier in a URL.
 
 ---
 
@@ -124,8 +157,23 @@ const decision = search.get("decision");
 
 if (decision !== "approve") throw new Error("user declined");
 
-const token = await ppx.mintToken(id);
+// The id alone is NOT enough — that is the whole point. Bring the
+// back-channel request_token and the PKCE verifier you stashed in step 2.
+const pending = JSON.parse(sessionStorage.getItem("ppx.pending")!);
+sessionStorage.removeItem("ppx.pending");   // one shot
+if (pending.grant_request_id !== id) throw new Error("callback does not match a flow we started");
+
+const token = await ppx.mintToken(
+  id,
+  pending.request_token,
+  pending.verifier,
+  "fragrance-demo",           // + a client_secret if you are a confidential client
+);
 //  → { access_token, token_type: "Bearer", expires_in: 3600, grant_id }
+
+// Every failure here returns an identical `400 invalid_grant`. The provider
+// deliberately will not tell you which check failed — a precise error would
+// let someone holding a stray id work out what else they need.
 ```
 
 Save `token.grant_id` to `localStorage` — you'll reuse it on return

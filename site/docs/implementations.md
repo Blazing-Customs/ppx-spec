@@ -20,7 +20,7 @@ PPX v0.1 has two.
 | **Identity** | Keycloak (OIDC) | Self-issued RS256 grant tokens |
 | **Dependencies** | Docker Compose, 4 services | None beyond stock PHP (`openssl`, `pdo_sqlite`, `json`) |
 | **Runs on** | A machine you administer | Commodity shared hosting |
-| **Conformance** | Run locally via `scripts/run_conformance.sh`; no public deployment to measure | **30/30, run over public HTTPS against the live deployment** |
+| **Conformance** | Run locally via `scripts/run_conformance.sh`; no public deployment to measure | **12/30 unauthenticated over public HTTPS; see below — the suite predates consent-v2** |
 
 Both were written against [the specification](spec.md) and both are checked by
 the same [conformance suite](conformance.md). Neither shares a line of code with
@@ -34,8 +34,8 @@ conditions matter as much as the score:
 | How you run it | Result |
 | --- | --- |
 | `pytest -m schema` — no provider needed | **7 passed**, 23 deselected |
-| Against a live provider, no credentials | **12 passed, 18 skipped**, 0 failed |
-| Against a live provider, with minted tokens | **30 passed, 0 skipped** |
+| Against a live provider, no credentials | **12 passed, 18 skipped**, 0 failed (re-measured 2026-08-04 against `https://ppx.dev/ppx`) |
+| Against a live provider, with minted tokens | **not currently reproducible — see below** |
 
 The 18 skips are not failures — they are the authenticated tests, which
 cannot run without tokens. A provider claiming full conformance must supply
@@ -43,13 +43,20 @@ them: the suite needs an access token plus purpose-built tokens for the
 expired-grant, revocation, cross-domain-denial and forbidden-writeback
 cases. The PHP provider mints all of them with `php bin/mint.php env`.
 
-Reproduce the 30/30 (measured 2026-08-03 against `https://ppx.dev/ppx`):
+!!! warning "The full-run figure is withdrawn pending a suite update"
+    A previous version of this page claimed **30/30**. That was measured on
+    2026-08-03, before the consent flow was changed.
 
-```bash
-php bin/mint.php env > /tmp/ppx.env   # on the provider host
-set -a; . /tmp/ppx.env; set +a
-pytest -q                             # 30 passed
-```
+    Seven of the suite's grant-flow tests exchange a bare `grant_request_id`
+    for an access token. **That is the vulnerability consent-v2 removed**, and
+    the provider now correctly refuses it — so those tests fail against a
+    conforming provider. The suite is testing the old, unsafe contract.
+
+    The unauthenticated figure above is unaffected and was re-measured after
+    the change. A full figure will be republished once the suite is updated
+    to send a PKCE challenge, hold the back-channel `request_token`, and
+    present both at exchange. **Until then no full-run number is quoted here**,
+    because the only honest one would be a count of a suite that is wrong.
 
 Each run consumes its revocable grant, so **re-running without re-minting
 gives 29 passed / 1 failed** — the revocation test correctly refuses an
