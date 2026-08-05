@@ -28,39 +28,31 @@ the other.
 
 ### What those numbers mean
 
-The suite is **30 tests**. What you get depends on what you give it, so the
-conditions matter as much as the score:
+The suite is **36 tests**, covering the consent-v2 protocol: PKCE (S256, with
+`plain` refused), the back-channel request token, single-use authorization,
+client binding, and refresh-token rotation with reuse detection.
 
 | How you run it | Result |
 | --- | --- |
-| `pytest -m schema` — no provider needed | **7 passed**, 23 deselected |
-| Against a live provider, no credentials | **12 passed, 18 skipped**, 0 failed (re-measured 2026-08-04 against `https://ppx.dev/ppx`) |
-| Against a live provider, with minted tokens | **not currently reproducible — see below** |
+| `pytest -m schema` — no provider needed | **7 passed**, 29 deselected |
+| Against a live provider, no credentials | **12 passed, 24 skipped**, 0 failed |
+| Against a live provider, with minted tokens | **36 passed, 0 skipped, 0 failed** |
 
-The 18 skips are not failures — they are the authenticated tests, which
-cannot run without tokens. A provider claiming full conformance must supply
-them: the suite needs an access token plus purpose-built tokens for the
-expired-grant, revocation, cross-domain-denial and forbidden-writeback
-cases. The PHP provider mints all of them with `php bin/mint.php env`.
+The skips are not failures — they are the authenticated tests, which cannot run
+without tokens. A provider claiming full conformance must supply them: the
+suite needs an access token plus purpose-built tokens for the expired-grant,
+revocation, cross-domain-denial and forbidden-writeback cases. The PHP provider
+mints all of them with `php bin/mint.php env`.
 
-!!! warning "The full-run figure is withdrawn pending a suite update"
-    A previous version of this page claimed **30/30**. That was measured on
-    2026-08-03, before the consent flow was changed.
+Reproduce the 36/36 (measured 2026-08-04 against `https://ppx.dev/ppx`):
 
-    Seven of the suite's grant-flow tests exchange a bare `grant_request_id`
-    for an access token. **That is the vulnerability consent-v2 removed**, and
-    the provider now correctly refuses it — so those tests fail against a
-    conforming provider. The suite is testing the old, unsafe contract.
+```bash
+php bin/mint.php env > /tmp/ppx.env   # on the provider host
+set -a; . /tmp/ppx.env; set +a
+pytest -q                             # 36 passed
+```
 
-    The unauthenticated figure above is unaffected and was re-measured after
-    the change. A full figure will be republished once the suite is updated
-    to send a PKCE challenge, hold the back-channel `request_token`, and
-    present both at exchange. **Until then no full-run number is quoted here**,
-    because the only honest one would be a count of a suite that is wrong.
-
-Each run consumes its revocable grant, so **re-running without re-minting
-gives 29 passed / 1 failed** — the revocation test correctly refuses an
-already-revoked grant. Mint fresh tokens per run.
+Each run consumes its revocable grant, so re-run against freshly minted tokens.
 
 ## What the second implementation established
 
