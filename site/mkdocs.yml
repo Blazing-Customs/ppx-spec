@@ -31,6 +31,10 @@ exclude_docs: |
 theme:
   name: material
   language: en
+  # overrides/main.html injects the GA4 tag as the last element in <head> on
+  # every generated page. Unset this and analytics silently stops being emitted
+  # site-wide with no build error.
+  custom_dir: overrides
   palette:
     - media: "(prefers-color-scheme: light)"
       scheme: default

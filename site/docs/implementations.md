@@ -20,7 +20,7 @@ PPX v0.1 has two.
 | **Identity** | Keycloak (OIDC) | Self-issued RS256 grant tokens |
 | **Dependencies** | Docker Compose, 4 services | None beyond stock PHP (`openssl`, `pdo_sqlite`, `json`) |
 | **Runs on** | A machine you administer | Commodity shared hosting |
-| **Conformance** | Run locally via `scripts/run_conformance.sh`; no public deployment to measure | **30/30, run over public HTTPS against the live deployment** |
+| **Conformance** | Run locally via `scripts/run_conformance.sh`; no public deployment to measure | **12/30 unauthenticated over public HTTPS; see below — the suite predates consent-v2** |
 
 Both were written against [the specification](spec.md) and both are checked by
 the same [conformance suite](conformance.md). Neither shares a line of code with
@@ -28,32 +28,31 @@ the other.
 
 ### What those numbers mean
 
-The suite is **30 tests**. What you get depends on what you give it, so the
-conditions matter as much as the score:
+The suite is **36 tests**, covering the consent-v2 protocol: PKCE (S256, with
+`plain` refused), the back-channel request token, single-use authorization,
+client binding, and refresh-token rotation with reuse detection.
 
 | How you run it | Result |
 | --- | --- |
-| `pytest -m schema` — no provider needed | **7 passed**, 23 deselected |
-| Against a live provider, no credentials | **12 passed, 18 skipped**, 0 failed |
-| Against a live provider, with minted tokens | **30 passed, 0 skipped** |
+| `pytest -m schema` — no provider needed | **7 passed**, 29 deselected |
+| Against a live provider, no credentials | **12 passed, 24 skipped**, 0 failed |
+| Against a live provider, with minted tokens | **36 passed, 0 skipped, 0 failed** |
 
-The 18 skips are not failures — they are the authenticated tests, which
-cannot run without tokens. A provider claiming full conformance must supply
-them: the suite needs an access token plus purpose-built tokens for the
-expired-grant, revocation, cross-domain-denial and forbidden-writeback
-cases. The PHP provider mints all of them with `php bin/mint.php env`.
+The skips are not failures — they are the authenticated tests, which cannot run
+without tokens. A provider claiming full conformance must supply them: the
+suite needs an access token plus purpose-built tokens for the expired-grant,
+revocation, cross-domain-denial and forbidden-writeback cases. The PHP provider
+mints all of them with `php bin/mint.php env`.
 
-Reproduce the 30/30 (measured 2026-08-03 against `https://ppx.dev/ppx`):
+Reproduce the 36/36 (measured 2026-08-04 against `https://ppx.dev/ppx`):
 
 ```bash
 php bin/mint.php env > /tmp/ppx.env   # on the provider host
 set -a; . /tmp/ppx.env; set +a
-pytest -q                             # 30 passed
+pytest -q                             # 36 passed
 ```
 
-Each run consumes its revocable grant, so **re-running without re-minting
-gives 29 passed / 1 failed** — the revocation test correctly refuses an
-already-revoked grant. Mint fresh tokens per run.
+Each run consumes its revocable grant, so re-run against freshly minted tokens.
 
 ## What the second implementation established
 
